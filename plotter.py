@@ -30,8 +30,8 @@ def single_plotter(nombre_fondo, nombre_archivo):
     plt.ylabel('Diferencia con el fondo')
     plt.title(nombre_archivo)
     #plt.savefig(nombre_archivo, bbox_inches='tight')    ##UNCOMMENT FOR SAVEIMAGES, NOT SHOW
-    #plt.clf()
-    plt.show()
+    plt.clf()
+    #plt.show()
 
 def multi_plotter(nombre_fondo, nombre_archivo, ax):
     archivo = leer_archivo(nombre_archivo)

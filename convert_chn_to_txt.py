@@ -1,37 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Jan  1 21:54:00 2016
-
-@author: Oscar Tegmyr
-oscar.tegmyr@gmail.com
-
-The code creates an object containing the  ortec .Chn spectrum file data. 
-The code is best used imported by other code (e.g. plotting or analysis code)
-but also has a stand alone feature which writes out a textfile with the 
-spectrum data. To be used in other source code, a general use case could be 
-getting the histogram data. The code for doing this could look like: 
-
-import read_chn as rc
-filename = <spectrum_name>.Chn
-spec_obj = rc.gamma_data(filename)
-hist_data = spec_obj.hist_array
-
-
-==== Binary header structure ===
-for more information 
-0  2 Must be -1
-2  2 MCA number or Detector number
-4  2 Segment number (set to 1 in UMCBI)
-6  2 ASCII seconds of start time
-8  4 Real Time (increments of 20 ms) (4-byte integer)
-12 4 Live Time (increments of 20 ms) (4-byte integer)
-16 8 Start date as ASCII DDMMMYY* or binary zeros, if not known. The *
-     character should be ignored if it is not a "1". If it is a "1", it 
-     indicates the data is after the year 2000.
-24 4 Start time as ASCII HHMM or binary zeros, if not known (see Byte 6 above)
-28 2 Channel offset of data
-30 2 Number of channels (length of data)
-"""
 import struct
 import sys
 import numpy as np 
@@ -69,18 +35,18 @@ class gamma_data:
         self.infile.close()
     def write_txt(self, fname):
         tf = open(filename[:-4]+'.txt','w')
-        tf.writelines(['# Filename : ' + fname, 
-                       '\n# Version: ' + str(self.version),
-                       '\n# MCA detector ID: ' + str(self.mca_detector_id),
-                       '\n# Start time : ' + self.start_time_hhmm[:2].decode('utf-8')+':'+ self.start_time_hhmm[:2].decode('utf-8') + ':'+ str(self.start_time_ss), 
-                       '\n# Start date : ' + self.start_date.decode('utf-8'), 
-                       '\n# No channels : ' + str(self.no_channels), 
-                       '\n# Live time : ' + str(self.live_time), 
-                       '\n# Real time : ' + str(self.real_time), 
-                       '\n# En cal factors A + B*x + C*x*x',
-                       '\n# A : ' + str(self.en_zero_inter), 
-                       '\n# B : ' + str(self.en_slope), 
-                       '\n# C : ' + str(self.en_quad)])
+#        tf.writelines(['# Filename : ' + fname,
+#                       '\n# Version: ' + str(self.version),
+#                       '\n# MCA detector ID: ' + str(self.mca_detector_id),
+#                       '\n# Start time : ' + self.start_time_hhmm[:2].decode('utf-8')+':'+ self.start_time_hhmm[:2].decode('utf-8') + ':'+ str(self.start_time_ss),
+#                       '\n# Start date : ' + self.start_date.decode('utf-8'),
+#                       '\n# No channels : ' + str(self.no_channels),
+#                       '\n# Live time : ' + str(self.live_time),
+#                       '\n# Real time : ' + str(self.real_time),
+#                       '\n# En cal factors A + B*x + C*x*x',
+#                       '\n# A : ' + str(self.en_zero_inter),
+#                       '\n# B : ' + str(self.en_slope),
+#                       '\n# C : ' + str(self.en_quad)])
         for i in self.hist_array:
             tf.write(str(int(i)) + '\n')
         tf.close()
