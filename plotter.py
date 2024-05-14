@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import sys
 
 def leer_archivo(nombre_archivo):
     with open(nombre_archivo, 'r') as archivo:
@@ -8,10 +9,7 @@ def leer_archivo(nombre_archivo):
         vector = [float(linea) for linea in lineas]
     return vector
 
-def diferencia(archivo1, archivo2):
-    vector1 = leer_archivo(archivo1)
-    vector2 = leer_archivo(archivo2)
-
+def diferencia(vector1, vector2):
     # Asegurarse de que ambos vectores tengan la misma longitud
     min_length = min(len(vector1), len(vector2))
     vector1 = vector1[:min_length]
@@ -20,26 +18,45 @@ def diferencia(archivo1, archivo2):
     # Calcular la diferencia entre los dos vectores y devolverla
     return [v1 - v2 for v1, v2 in zip(vector1, vector2)]
 
-def main(fondo, archivo):
-
-    archivo1 = leer_archivo(archivo)
-
-    fondo1 = leer_archivo(fondo)
-    
-    diferenciaVar = diferencia(archivo1,fondo1)
-
+def single_plotter(nombre_fondo, nombre_archivo):
+    archivo = leer_archivo(nombre_archivo)
+    fondo = leer_archivo(nombre_fondo)
+    diferenciaVar = diferencia(archivo,fondo)
     # Generar el vector de números de fila del archivo (asumiendo que ambos archivos tienen la misma longitud)
     numeros_de_fila = list(range(1, len(diferenciaVar) + 1))
-
-
-    # Graficar la diferencia entre archivo y fondo
-
-   
-
-    linea = plt.semilogy(numeros_de_fila, diferenciaVar, label='Diferencia Directo50AMP y AcopleDIRECTO')
-
+    #grafico
+    plt.semilogy(numeros_de_fila, diferenciaVar)
     plt.xlabel('Número de fila del archivo')
-    plt.ylabel('Diferencia')
-    plt.title('50 AMPLIFICACIÓN')
-    plt.legend(handles=[linea], loc='upper right', bbox_to_anchor=(1.25, 1))
-   
+    plt.ylabel('Diferencia con el fondo')
+    plt.title(nombre_archivo)
+    #plt.savefig(nombre_archivo, bbox_inches='tight')    ##UNCOMMENT FOR SAVEIMAGES, NOT SHOW
+    #plt.clf()
+    plt.show()
+
+def multi_plotter(nombre_fondo, nombre_archivo, ax):
+    archivo = leer_archivo(nombre_archivo)
+    fondo = leer_archivo(nombre_fondo)
+    diferenciaVar = diferencia(archivo,fondo)
+    # Generar el vector de números de fila del archivo (asumiendo que ambos archivos tienen la misma longitud)
+    numeros_de_fila = list(range(1, len(diferenciaVar) + 1))
+    #grafico
+    ax.semilogy(numeros_de_fila, diferenciaVar, label=nombre_archivo)
+
+# plotter.py    fondo          *
+# argv[0]      argv[1]    argv[2....n]
+fondo = sys.argv[1]
+
+for archivo in sys.argv[2:]:
+    if archivo != fondo and not archivo.endswith('.png'):
+        single_plotter(fondo,archivo)
+plt.close()
+fig, ax = plt.subplots()
+for archivo in sys.argv[2:]:
+    if archivo != fondo and not archivo.endswith('.png'):
+        multi_plotter(fondo,archivo, ax)
+plt.xlabel('Número de fila del archivo')
+plt.ylabel('Diferencia con el fondo')
+plt.title('Multiplot')
+plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+#plt.savefig('Multiplot', bbox_inches='tight') ##UNCOMMENT FOR SAVEIMAGES, NOT SHOW
+plt.show()

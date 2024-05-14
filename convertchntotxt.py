@@ -13,6 +13,8 @@ def convert_all_chn_to_txt(folder_path):
                 with open(chn_file_path, 'r', encoding='utf-8') as f:
                     chn_content = f.read()
                 
+#                content,lines().iter().filter(|line| line.begins_whith('#')).collect()
+                
                 with open(txt_file_path, 'w', encoding='utf-8') as f:
                     f.write(chn_content)
                 
