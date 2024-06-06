@@ -35,18 +35,18 @@ class gamma_data:
         self.infile.close()
     def write_txt(self, fname):
         tf = open(filename[:-4]+'.txt','w')
-#        tf.writelines(['# Filename : ' + fname,
-#                       '\n# Version: ' + str(self.version),
-#                       '\n# MCA detector ID: ' + str(self.mca_detector_id),
-#                       '\n# Start time : ' + self.start_time_hhmm[:2].decode('utf-8')+':'+ self.start_time_hhmm[:2].decode('utf-8') + ':'+ str(self.start_time_ss),
-#                       '\n# Start date : ' + self.start_date.decode('utf-8'),
-#                       '\n# No channels : ' + str(self.no_channels),
-#                       '\n# Live time : ' + str(self.live_time),
-#                       '\n# Real time : ' + str(self.real_time),
-#                       '\n# En cal factors A + B*x + C*x*x',
-#                       '\n# A : ' + str(self.en_zero_inter),
-#                       '\n# B : ' + str(self.en_slope),
-#                       '\n# C : ' + str(self.en_quad)])
+        tf.writelines(['# Filename : ' + fname,
+                       '\n# Version: ' + str(self.version),
+                       '\n# MCA detector ID: ' + str(self.mca_detector_id),
+                       '\n# Start time : ' + self.start_time_hhmm[:2].decode('utf-8')+':'+ self.start_time_hhmm[:2].decode('utf-8') + ':'+ str(self.start_time_ss),
+                       '\n# Start date : ' + self.start_date.decode('utf-8'),
+                       '\n# No channels : ' + str(self.no_channels),
+                       '\n# Live time : ' + str(self.live_time),
+                       '\n# Real time : ' + str(self.real_time),
+                       '\n# En cal factors A + B*x + C*x*x',
+                       '\n# A : ' + str(self.en_zero_inter),
+                       '\n# B : ' + str(self.en_slope),
+                       '\n# C : ' + str(self.en_quad)])
         for i in self.hist_array:
             tf.write(str(int(i)) + '\n')
         tf.close()
